@@ -1,13 +1,11 @@
 package com.ggrec.vdf_spring.controller;
 
 import com.ggrec.vdf_spring.domain.VDFAthlete;
+import com.ggrec.vdf_spring.domain.VDFEvent;
 import com.ggrec.vdf_spring.repository.VDFAthleteRepository;
+import com.ggrec.vdf_spring.service.VDFEventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -16,17 +14,21 @@ import java.util.List;
 @RequestMapping(path = "/event")
 public class VDFEventController {
 
-
-    private VDFAthleteRepository vdfAthleteRepository;
+    private VDFEventService vdfEventService;
 
     @Autowired
-    public VDFEventController(VDFAthleteRepository vdfAthleteRepository) {
-        this.vdfAthleteRepository = vdfAthleteRepository;
+    public VDFEventController(VDFEventService vdfEventService) {
+        this.vdfEventService = vdfEventService;
     }
 
     @GetMapping(path="/test")
-    public List<VDFAthlete> test(HttpServletRequest httpServletRequest) {
-        return vdfAthleteRepository.findAll();
+    public List<VDFAthlete> getAll(HttpServletRequest httpServletRequest) {
+        return null;
+    }
+
+    @PostMapping(path="/add")
+    public void add(@RequestBody VDFEvent vdfEvent) {
+        vdfEventService.save(vdfEvent);
     }
 
 }
