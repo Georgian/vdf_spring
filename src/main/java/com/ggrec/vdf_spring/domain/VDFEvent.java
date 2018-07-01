@@ -55,6 +55,23 @@ public class VDFEvent {
         this.description = description;
     }
 
+
+    public String getSport() {
+        return sport;
+    }
+
+    public void setSport(String sport) {
+        this.sport = sport;
+    }
+
+    public String getDiscipline() {
+        return discipline;
+    }
+
+    public void setDiscipline(String discipline) {
+        this.discipline = discipline;
+    }
+
     public VDFOrganizer getOrganizer() {
         return organizer;
     }

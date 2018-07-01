@@ -12,6 +12,7 @@ public class VDFOrganizer {
     private long id;
     private String name;
     private String websiteLink;
+    private String logoLink;
 
     public long getId() {
         return id;
@@ -37,4 +38,11 @@ public class VDFOrganizer {
         this.websiteLink = websiteLink;
     }
 
+    public String getLogoLink() {
+        return logoLink;
+    }
+
+    public void setLogoLink(String logoLink) {
+        this.logoLink = logoLink;
+    }
 }
