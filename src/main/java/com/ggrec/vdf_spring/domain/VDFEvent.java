@@ -14,6 +14,11 @@ public class VDFEvent {
     private long id;
     private String name;
     private String description;
+    private String sport;
+    private String discipline;
+    // private List<String> levels;
+    // private List<String> ageCategories;
+    // private List<String> distanceCategories
     @OneToOne
     private VDFOrganizer organizer;
     private LocalDate date;

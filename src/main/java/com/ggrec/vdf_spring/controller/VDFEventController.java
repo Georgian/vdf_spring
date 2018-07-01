@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/event")
+@RequestMapping(path = "/api/event")
 public class VDFEventController {
 
     private VDFEventService vdfEventService;
