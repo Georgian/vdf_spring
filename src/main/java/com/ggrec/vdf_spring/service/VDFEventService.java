@@ -5,6 +5,8 @@ import com.ggrec.vdf_spring.repository.VDFEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VDFEventService {
 
@@ -17,6 +19,10 @@ public class VDFEventService {
 
     public void save(VDFEvent vdfEvent) {
         vdfEventRepository.save(vdfEvent);
+    }
+
+    public List<VDFEvent> getAll() {
+        return vdfEventRepository.findAll();
     }
 
 }

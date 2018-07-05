@@ -21,9 +21,9 @@ public class VDFEventController {
         this.vdfEventService = vdfEventService;
     }
 
-    @GetMapping(path="/test")
-    public List<VDFAthlete> getAll(HttpServletRequest httpServletRequest) {
-        return null;
+    @GetMapping
+    public List<VDFEvent> getAll() {
+        return vdfEventService.getAll();
     }
 
     @PostMapping(path="/add")

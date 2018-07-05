@@ -1,9 +1,6 @@
 package com.ggrec.vdf_spring.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity(name = "vdf_event")
@@ -13,6 +10,7 @@ public class VDFEvent {
     @GeneratedValue
     private long id;
     private String name;
+    @Column(length = 1000)
     private String description;
     private String sport;
     private String discipline;
