@@ -17,8 +17,9 @@ public class VDFEvent {
     // private List<String> levels;
     // private List<String> ageCategories;
     // private List<String> distanceCategories
-    @OneToOne
-    private VDFOrganizer organizer;
+    private String organizer;
+//    @OneToOne
+//    private VDFOrganizer organizer;
     private LocalDate date;
     private String timeSchedule;
     private String price;
@@ -70,11 +71,11 @@ public class VDFEvent {
         this.discipline = discipline;
     }
 
-    public VDFOrganizer getOrganizer() {
+    public String getOrganizer() {
         return organizer;
     }
 
-    public void setOrganizer(VDFOrganizer organizer) {
+    public void setOrganizer(String organizer) {
         this.organizer = organizer;
     }
 

@@ -1,13 +1,10 @@
 package com.ggrec.vdf_spring.controller;
 
-import com.ggrec.vdf_spring.domain.VDFAthlete;
 import com.ggrec.vdf_spring.domain.VDFEvent;
-import com.ggrec.vdf_spring.repository.VDFAthleteRepository;
 import com.ggrec.vdf_spring.service.VDFEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -22,8 +19,12 @@ public class VDFEventController {
     }
 
     @GetMapping
-    public List<VDFEvent> getAll() {
-        return vdfEventService.getAll();
+    public List<VDFEvent> getAll(
+            @RequestParam(value = "discipline", required =  false) List<String> disciplines,
+            @RequestParam(value = "organizer", required = false) List<String> organizers
+    ) {
+
+        return vdfEventService.getAll(disciplines, organizers);
     }
 
     @PostMapping(path="/add")
