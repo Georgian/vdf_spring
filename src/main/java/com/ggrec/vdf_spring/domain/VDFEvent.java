@@ -2,6 +2,7 @@ package com.ggrec.vdf_spring.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Entity(name = "vdf_event")
 public class VDFEvent {
@@ -18,7 +19,7 @@ public class VDFEvent {
     // private List<String> ageCategories;
     // private List<String> distanceCategories
     private String organizer;
-//    @OneToOne
+    //    @OneToOne
 //    private VDFOrganizer organizer;
     private LocalDate date;
     private String timeSchedule;
@@ -29,6 +30,20 @@ public class VDFEvent {
     private String technicalGuideLink;
     private String photoLink;
     private String trackLinks;
+
+    public boolean matchesQuery(String query) {
+        return matches(name, query) ||
+                matches(description, query) ||
+                matches(discipline, query) ||
+                matches(organizer, query) ||
+                matches(locationName, query);
+    }
+
+    private boolean matches(String field, String query) {
+        return Optional.ofNullable(field)
+                .map(str -> str.toLowerCase().contains(query.toLowerCase()))
+                .orElse(false);
+    }
 
     public long getId() {
         return id;
@@ -53,7 +68,6 @@ public class VDFEvent {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public String getSport() {
         return sport;

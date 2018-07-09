@@ -2,11 +2,11 @@ package com.ggrec.vdf_spring.service;
 
 import com.ggrec.vdf_spring.domain.VDFEvent;
 import com.ggrec.vdf_spring.repository.VDFEventRepository;
+import com.ggrec.vdf_spring.util.VDFUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,7 +24,7 @@ public class VDFEventService {
         vdfEventRepository.save(vdfEvent);
     }
 
-    public List<VDFEvent> getAll(List<String> disciplines, List<String> organizers) {
+    public List<VDFEvent> getAll(String query, List<String> disciplines, List<String> organizers) {
 
         Stream<VDFEvent> events = vdfEventRepository.findAll().stream();
 
@@ -33,6 +33,9 @@ public class VDFEventService {
 
         if (organizers != null)
             events = events.filter(e -> organizers.contains(e.getOrganizer()));
+
+        if (!VDFUtils.isNullOrEmpty(query))
+            events = events.filter(e -> e.matchesQuery(query));
 
         return events.collect(Collectors.toList());
     }
