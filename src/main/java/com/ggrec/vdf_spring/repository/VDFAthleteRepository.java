@@ -1,12 +1,12 @@
 package com.ggrec.vdf_spring.repository;
 
-import com.ggrec.vdf_spring.domain.VDFAthlete;
+import com.ggrec.vdf_spring.domain.VDFAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VDFAthleteRepository extends JpaRepository<VDFAthlete, Long> {
+public interface VDFAthleteRepository extends JpaRepository<VDFAccount, Long>, VDFAthleteRepositoryCustom {
 
-    VDFAthlete findOneByEmail(String email);
+    VDFAccount findOneByEmail(String email);
 
 }
