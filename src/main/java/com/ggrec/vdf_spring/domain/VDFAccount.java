@@ -1,17 +1,11 @@
 package com.ggrec.vdf_spring.domain;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Arrays;
-import java.util.Collection;
 
 @Entity(name = "vdf_athlete")
-public class VDFAccount implements UserDetails {
+public class VDFAccount {
 
     @Id
     @GeneratedValue
@@ -42,44 +36,5 @@ public class VDFAccount implements UserDetails {
 
     public void setEncryptedPassword(String encryptedPassword) {
         this.encryptedPassword = encryptedPassword;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        String privilege = "ROLE_USER";
-        if (getEmail().equals("grec.georgian@gmail.com"))
-            privilege = "ROLE_ADMIN";
-
-        return Arrays.asList(new SimpleGrantedAuthority(privilege));
-    }
-
-    @Override
-    public String getPassword() {
-        return getEncryptedPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        return getEmail();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }
