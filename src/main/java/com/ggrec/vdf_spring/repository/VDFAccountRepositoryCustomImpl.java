@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
-public class VDFAthleteRepositoryCustomImpl implements VDFAthleteRepositoryCustom {
+public class VDFAccountRepositoryCustomImpl implements VDFAccountRepositoryCustom {
 
     @PersistenceContext
     private EntityManager entityManager;

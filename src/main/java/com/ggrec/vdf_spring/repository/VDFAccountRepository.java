@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VDFAthleteRepository extends JpaRepository<VDFAccount, Long>, VDFAthleteRepositoryCustom {
+public interface VDFAccountRepository extends JpaRepository<VDFAccount, Long>, VDFAccountRepositoryCustom {
 
     VDFAccount findOneByEmail(String email);
 

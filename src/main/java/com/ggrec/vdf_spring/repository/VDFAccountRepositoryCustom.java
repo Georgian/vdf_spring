@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VDFAthleteRepositoryCustom {
+public interface VDFAccountRepositoryCustom {
 
     Optional<VDFAccount> findByToken(String token);
 

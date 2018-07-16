@@ -31,10 +31,9 @@ repositories {
 dependencies {
 	compile('com.h2database:h2')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-//	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.1.RELEASE')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-//	testCompile('org.springframework.security:spring-security-test')
 
 	compileOnly 'org.projectlombok:lombok:1.18.0'
 	apt "org.projectlombok:lombok:1.18.0"
