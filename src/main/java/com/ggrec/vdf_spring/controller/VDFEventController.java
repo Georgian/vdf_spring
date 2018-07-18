@@ -20,12 +20,13 @@ public class VDFEventController {
 
     @GetMapping
     public List<VDFEvent> getAll(
+            @RequestParam(value = "sport", required = false) List<String> sports,
             @RequestParam(value = "discipline", required =  false) List<String> disciplines,
             @RequestParam(value = "organizer", required = false) List<String> organizers,
             @RequestParam(value = "query", required = false) String query
     ) {
 
-        return vdfEventService.getAll(query, disciplines, organizers);
+        return vdfEventService.getAll(query, sports, disciplines, organizers);
     }
 
     @PostMapping(path="/add")

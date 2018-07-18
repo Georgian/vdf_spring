@@ -24,9 +24,12 @@ public class VDFEventService {
         vdfEventRepository.save(vdfEvent);
     }
 
-    public List<VDFEvent> getAll(String query, List<String> disciplines, List<String> organizers) {
+    public List<VDFEvent> getAll(String query, List<String> sports, List<String> disciplines, List<String> organizers) {
 
         Stream<VDFEvent> events = vdfEventRepository.findAll().stream();
+
+        if (sports != null)
+            events = events.filter(e -> sports.contains(e.getSport()));
 
         if (disciplines != null)
             events = events.filter(e -> disciplines.contains(e.getDiscipline()));
