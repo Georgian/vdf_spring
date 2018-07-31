@@ -9,4 +9,6 @@ public interface VDFAccountRepository extends JpaRepository<VDFAccount, Long>, V
 
     VDFAccount findOneByEmail(String email);
 
+    VDFAccount findOneByFacebookId(String facebookId);
+
 }

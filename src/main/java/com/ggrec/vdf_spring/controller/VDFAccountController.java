@@ -9,8 +9,13 @@ import java.security.Principal;
 @RequestMapping(path = "/api/account")
 public class VDFAccountController {
 
+    @RequestMapping("/user")
     public Principal user(Principal principal) {
         return principal;
+    }
+
+    public void logout() {
+
     }
 
 }

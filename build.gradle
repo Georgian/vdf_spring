@@ -30,8 +30,9 @@ repositories {
 
 dependencies {
 	compile('com.h2database:h2')
+    compile('com.restfb:restfb:2.7.0')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	// compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.1.RELEASE')
+	compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.1.RELEASE')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
