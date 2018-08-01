@@ -9,7 +9,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -34,39 +33,31 @@ public class FacebookAuthenticationManager implements AuthenticationManager {
         VDFUser fbUser = facebookService.findUser((String) auth.getCredentials());
         if (fbUser != null && fbUser.getFacebookId().equals(auth.getPrincipal())) {
 
-            VDFUser user;
+            VDFUser user = vdfAccountDetailsService.loadUserByFacebookId(fbUser.getFacebookId());
 
-            try {
+            if (user == null) {
+                user = vdfAccountDetailsService.loadUserByEmail(fbUser.getEmail());
 
-                user = vdfAccountDetailsService.loadUserByFacebookId(fbUser.getFacebookId());
-
-            } catch (UsernameNotFoundException e1) {
-
-                try {
-                    user = vdfAccountDetailsService.loadUserByEmail(fbUser.getEmail());
-
-                    if (user.getFacebookId() == null) {
-                        VDFAccount account = vdfAccountService.loadAccountByEmail(fbUser.getEmail());
-                        account.setFacebookId(fbUser.getFacebookId());
-                        account = vdfAccountService.saveAccount(account);
-                        user = vdfAccountDetailsService.user(account);
-                    }
-
-                } catch (UsernameNotFoundException e2) {
-
+                if (user == null) {
                     VDFAccount newAccount = new VDFAccount();
                     newAccount.setFacebookId(fbUser.getFacebookId());
                     newAccount.setEmail(fbUser.getEmail());
                     newAccount = vdfAccountService.saveAccount(newAccount);
                     user = vdfAccountDetailsService.user(newAccount);
-                }
 
+                } else if (user.getFacebookId() == null) {
+                    VDFAccount account = vdfAccountService.loadAccountByEmail(fbUser.getEmail());
+                    account.setFacebookId(fbUser.getFacebookId());
+                    account = vdfAccountService.saveAccount(account);
+                    user = vdfAccountDetailsService.user(account);
+                }
             }
 
-            return new UsernamePasswordAuthenticationToken(user, auth.getCredentials(), user.getAuthorities());
-        } else {
-            throw new BadCredentialsException("Authentication Failed");
+            if (user != null)
+                return new UsernamePasswordAuthenticationToken(user, auth.getCredentials(), user.getAuthorities());
         }
+
+        throw new BadCredentialsException("Authentication Failed");
     }
 
 }
