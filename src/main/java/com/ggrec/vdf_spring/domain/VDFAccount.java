@@ -11,7 +11,6 @@ public class VDFAccount {
     @GeneratedValue
     private long id;
     private String email;
-    private String facebookId;
     private String name;
     private String encryptedPassword;
 
@@ -33,14 +32,6 @@ public class VDFAccount {
 
     public String getEncryptedPassword() {
         return encryptedPassword;
-    }
-
-    public String getFacebookId() {
-        return facebookId;
-    }
-
-    public void setFacebookId(String facebookId) {
-        this.facebookId = facebookId;
     }
 
     public void setEncryptedPassword(String encryptedPassword) {
