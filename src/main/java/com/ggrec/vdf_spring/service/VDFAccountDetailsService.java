@@ -26,12 +26,12 @@ public class VDFAccountDetailsService implements UserDetailsService {
 
     public VDFUser loadUserByFacebookId(String fid) throws UsernameNotFoundException {
         VDFAccount account = vdfAccountService.loadAccountByFacebookId(fid);
-        return account == null ? null : user(account);
+        return user(account);
     }
 
     public VDFUser loadUserByEmail(String email) throws UsernameNotFoundException {
         VDFAccount account = vdfAccountService.loadAccountByEmail(email);
-        return account == null ? null : user(account);
+        return user(account);
     }
 
     /**

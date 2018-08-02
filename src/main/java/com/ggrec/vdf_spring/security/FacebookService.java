@@ -4,7 +4,10 @@ import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.Version;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class FacebookService {
@@ -29,7 +32,7 @@ public class FacebookService {
                 return myCarfaxUser(user);
 
         } catch (Exception e) {
-            System.out.println(e);
+
         }
 
         return null;

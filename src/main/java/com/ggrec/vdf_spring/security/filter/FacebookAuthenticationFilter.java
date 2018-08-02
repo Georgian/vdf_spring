@@ -34,7 +34,7 @@ public class FacebookAuthenticationFilter extends GenericFilterBean {
 
         if (header != null) {
             if (header.startsWith("Facebook ")) {
-                String[] usernamePassword = parseUsernamePassword(header.substring(9));
+                String[] usernamePassword = parseUsernamePassword(header.substring(6));
 
                 try {
                     UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
@@ -63,8 +63,8 @@ public class FacebookAuthenticationFilter extends GenericFilterBean {
      * @return [0] - id, [1] - authToken
      */
     private String[] parseUsernamePassword(String encodedToken) throws IOException {
-        // String token = new String(new BASE64Decoder().decodeBuffer(encodedToken), "UTF-8");
-        return encodedToken.split(":", 2);
+        String token = new String(new BASE64Decoder().decodeBuffer(encodedToken), "UTF-8");
+        return token.split(":", 2);
     }
 
 }
