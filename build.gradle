@@ -30,10 +30,13 @@ repositories {
 
 dependencies {
 	compile('com.h2database:h2')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	// compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.1.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile('org.springframework.social:spring-social-facebook:2.0.3.RELEASE')
+    compile('org.springframework.social:spring-social-security:1.1.6.RELEASE')
+    compile('org.springframework.social:spring-social-config:1.1.6.RELEASE')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 
 	compileOnly 'org.projectlombok:lombok:1.18.0'
 	apt "org.projectlombok:lombok:1.18.0"
