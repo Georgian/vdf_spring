@@ -15,10 +15,4 @@ public class VDFAccountRepositoryCustomImpl implements VDFAccountRepositoryCusto
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
-    public Optional<VDFAccount> findByToken(String token) {
-        // TODO
-        return Optional.empty();
-    }
-
 }

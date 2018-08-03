@@ -1,64 +1,66 @@
 package com.ggrec.vdf_spring.config;
 
-import com.ggrec.vdf_spring.security.FacebookConnectionSignup;
-import org.springframework.social.config.annotation.EnableSocial;
-import org.springframework.social.config.annotation.SocialConfigurerAdapter;
+import com.ggrec.vdf_spring.repository.SimpleUsersConnectionRepository;
+import com.ggrec.vdf_spring.security.UserAuthenticationUserIdSource;
+import com.ggrec.vdf_spring.service.VDFAccountSocialDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
-import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.UserIdSource;
 import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
-import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.UsersConnectionRepository;
-import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
-import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.connect.web.ProviderSignInUtils;
+import org.springframework.social.config.annotation.EnableSocial;
+import org.springframework.social.config.annotation.SocialConfigurerAdapter;
+import org.springframework.social.connect.*;
+import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
-import org.springframework.social.security.AuthenticationNameUserIdSource;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableSocial
 public class VDFSocialConfig extends SocialConfigurerAdapter {
 
-    @Autowired
-    private DataSource dataSource;
+    private ConnectionSignUp autoSignUpHandler;
+
+    private VDFAccountSocialDetailsService accountSocialDetailsService;
 
     @Autowired
-    private FacebookConnectionSignup facebookConnectionSignup;
+    public VDFSocialConfig(ConnectionSignUp autoSignUpHandler, VDFAccountSocialDetailsService accountSocialDetailsService) {
+        this.autoSignUpHandler = autoSignUpHandler;
+        this.accountSocialDetailsService = accountSocialDetailsService;
+    }
 
     @Override
-    public void addConnectionFactories(ConnectionFactoryConfigurer connectionFactoryConfigurer, Environment environment) {
-        connectionFactoryConfigurer.addConnectionFactory(new FacebookConnectionFactory(
-                environment.getProperty("facebook.client.clientId"),
-                environment.getProperty("facebook.client.clientSecret"))
-        );
+    public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
+        cfConfig.addConnectionFactory(new FacebookConnectionFactory(
+                env.getProperty("facebook.client.clientId"),
+                env.getProperty("facebook.client.clientSecret")));
     }
 
     @Override
     public UserIdSource getUserIdSource() {
-        return new AuthenticationNameUserIdSource();
+        // retrieve the UserId from the UserAuthentication in the security context
+        return new UserAuthenticationUserIdSource();
     }
 
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
-        JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
-        repository.setConnectionSignUp(facebookConnectionSignup);
-        return repository;
+        SimpleUsersConnectionRepository usersConnectionRepository =
+                new SimpleUsersConnectionRepository(accountSocialDetailsService, connectionFactoryLocator);
+
+        // if no local user record exists yet for a facebook's user id
+        // automatically create a User and add it to the database
+        usersConnectionRepository.setConnectionSignUp(autoSignUpHandler);
+
+        return usersConnectionRepository;
     }
 
     @Bean
-    public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository) {
-        return new ConnectController(connectionFactoryLocator, connectionRepository);
-    }
-
-    @Bean
-    public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository) {
-        return new ProviderSignInUtils(connectionFactoryLocator, usersConnectionRepository);
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public Facebook facebook(ConnectionRepository repository) {
+        Connection<Facebook> connection = repository.findPrimaryConnection(Facebook.class);
+        return connection != null ? connection.getApi() : null;
     }
 
 }

@@ -1,65 +1,96 @@
 package com.ggrec.vdf_spring.config;
 
-import com.ggrec.vdf_spring.security.CustomLoginFailureHandler;
-import com.ggrec.vdf_spring.security.FacebookConnectionSignup;
-import com.ggrec.vdf_spring.service.VDFAccountDetailsService;
-import com.ggrec.vdf_spring.service.VDFSocialAccountDetailsService;
+import com.ggrec.vdf_spring.security.SocialAuthenticationSuccessHandler;
+import com.ggrec.vdf_spring.security.VDFAuthenticationFilter;
+import com.ggrec.vdf_spring.service.VDFAccountSocialDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.social.security.SocialUserDetailsService;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.social.UserIdSource;
+import org.springframework.social.security.SocialAuthenticationFilter;
 import org.springframework.social.security.SpringSocialConfigurer;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
+@Order(1)
 public class VDFConfig extends WebSecurityConfigurerAdapter {
 
+    private SocialAuthenticationSuccessHandler socialAuthenticationSuccessHandler;
+
+    private VDFAuthenticationFilter authenticationFilter;
+
+    private UserIdSource userIdSource;
+
+    private VDFAccountSocialDetailsService accountSocialDetailsService;
+
     @Autowired
-    private VDFAccountDetailsService userDetailsService;
+    public VDFConfig(
+            SocialAuthenticationSuccessHandler socialAuthenticationSuccessHandler,
+            VDFAuthenticationFilter authenticationFilter,
+            UserIdSource userIdSource,
+            VDFAccountSocialDetailsService accountSocialDetailsService
+    ) {
+        super(true);
+        this.socialAuthenticationSuccessHandler = socialAuthenticationSuccessHandler;
+        this.authenticationFilter = authenticationFilter;
+        this.userIdSource = userIdSource;
+        this.accountSocialDetailsService = accountSocialDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // Set a custom successHandler on the SocialAuthenticationFilter
+        final SpringSocialConfigurer socialConfigurer = new SpringSocialConfigurer();
+        socialConfigurer.addObjectPostProcessor(new ObjectPostProcessor<SocialAuthenticationFilter>() {
+            @Override
+            public <O extends SocialAuthenticationFilter> O postProcess(O socialAuthenticationFilter) {
+                socialAuthenticationFilter.setAuthenticationSuccessHandler(socialAuthenticationSuccessHandler);
+                return socialAuthenticationFilter;
+            }
+        });
 
         http
-                .csrf().disable()
+                .exceptionHandling().and()
                 .anonymous().and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/", true)
-                .loginProcessingUrl("/login/authenticate")
-                .failureHandler(new CustomLoginFailureHandler())
-                .and()
-                .logout()
-                .deleteCookies("SESSION")
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .and()
-                .authorizeRequests()
-                .antMatchers(
-                        "/auth/**",
-                        "/login",
-                        "/error",
-                        "/signup",
-                        "/css/**",
-                        "/js/**"
-                ).permitAll()
-                .antMatchers("/**").hasRole("USER")
-                .and()
-                .apply(new SpringSocialConfigurer());
-    }
+                .servletApi().and()
+                .headers().cacheControl();
 
-    @Bean
-    public SocialUserDetailsService socialUsersDetailService() {
-        return new VDFSocialAccountDetailsService(userDetailsService);
+        http
+                .authorizeRequests()
+
+                //allow anonymous font and template requests
+                .antMatchers("/").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
+                .antMatchers("/resources/**").permitAll()
+
+                // todo facebook only for now
+                //allow anonymous calls to social login
+                .antMatchers("/auth/**").permitAll()
+
+                //allow anonymous GETs to API
+                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
+
+                //defined Admin only API area
+                .antMatchers("/admin/**").hasRole("ADMIN")
+
+                //all other request need to be authenticated
+                .antMatchers(HttpMethod.GET, "/api/users/current/details").hasRole("USER")
+                .anyRequest().hasRole("USER").and()
+
+                // add custom authentication filter for complete stateless JWT based authentication
+                .addFilterBefore(authenticationFilter, AbstractPreAuthenticatedProcessingFilter.class)
+
+                // apply the configuration from the socialConfigurer (adds the SocialAuthenticationFilter)
+                .apply(socialConfigurer.userIdSource(userIdSource));
     }
 
     @Bean
@@ -68,35 +99,14 @@ public class VDFConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
-        return daoAuthenticationProvider;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider());
+        auth.userDetailsService(accountSocialDetailsService);
     }
 
     @Override
-    protected UserDetailsService userDetailsService() {
-        return userDetailsService;
+    protected VDFAccountSocialDetailsService userDetailsService() {
+        return accountSocialDetailsService;
     }
-
-//    @Bean
-//    public JedisConnectionFactory connectionFactory(@RedisServerPort int port) {
-//        JedisConnectionFactory connection = new JedisConnectionFactory();
-//        connection.setPort(port);
-//        return connection;
-//    }
 
 }
