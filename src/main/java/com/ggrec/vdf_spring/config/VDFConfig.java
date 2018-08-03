@@ -58,7 +58,7 @@ public class VDFConfig extends WebSecurityConfigurerAdapter {
             }
         });
 
-        http.csrf().disable();
+        //http.csrf().disable();
 
         http
                 .exceptionHandling().and()
@@ -67,6 +67,8 @@ public class VDFConfig extends WebSecurityConfigurerAdapter {
                 .headers().cacheControl();
 
         http
+                .cors().and()
+
                 .authorizeRequests()
 
                 //allow anonymous font and template requests
