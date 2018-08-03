@@ -14,7 +14,6 @@ import java.util.*;
  */
 public class SimpleUsersConnectionRepository implements UsersConnectionRepository {
 
-    // TODO fetch from application.yml
     public static final String PROVIDER_ID = "facebook";
 
     private VDFAccountSocialDetailsService accountSocialDetailsService;

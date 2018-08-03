@@ -9,10 +9,7 @@ import org.springframework.social.security.SocialUserDetails;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name = "vdf_account")
 public class VDFAccount implements SocialUserDetails {
@@ -117,7 +114,7 @@ public class VDFAccount implements SocialUserDetails {
     @JsonIgnore
     @Override
     public String getUserId() {
-        return id.toString();
+        return Objects.toString(id);
     }
 
     @JsonIgnore

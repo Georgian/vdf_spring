@@ -58,6 +58,8 @@ public class VDFConfig extends WebSecurityConfigurerAdapter {
             }
         });
 
+        http.csrf().disable();
+
         http
                 .exceptionHandling().and()
                 .anonymous().and()
@@ -74,16 +76,16 @@ public class VDFConfig extends WebSecurityConfigurerAdapter {
 
                 // todo facebook only for now
                 //allow anonymous calls to social login
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth/facebook/**").permitAll()
 
                 //allow anonymous GETs to API
-                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/**").permitAll()
 
                 //defined Admin only API area
                 .antMatchers("/admin/**").hasRole("ADMIN")
 
                 //all other request need to be authenticated
-                .antMatchers(HttpMethod.GET, "/api/users/current/details").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/users/current/details").hasRole("USER")
                 .anyRequest().hasRole("USER").and()
 
                 // add custom authentication filter for complete stateless JWT based authentication

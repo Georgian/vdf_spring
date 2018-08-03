@@ -8,6 +8,10 @@ spring:
         hibernate:
           ddl-auto: update
 
+server:
+  servlet:
+    context-path: /api
+
 token:
   secret: 9SyECk96oDsTmXfogIieDI0cD/8FpnojlYSUJT5U9I/FGVmBz5oskmjOR8cbXTvoPjX+Pq/T/b1PqpHX0lYm0oCBjXWICA==
 

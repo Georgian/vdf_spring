@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.List;
 
 @Service
 @Transactional
@@ -24,6 +25,10 @@ public class VDFAccountDetailsService implements VDFAccountSocialDetailsService 
     @Autowired
     public VDFAccountDetailsService(VDFAccountRepository accountRepository) {
         this.accountRepository = accountRepository;
+    }
+
+    public List<VDFAccount> findAll() {
+        return accountRepository.findAll();
     }
 
     @Override

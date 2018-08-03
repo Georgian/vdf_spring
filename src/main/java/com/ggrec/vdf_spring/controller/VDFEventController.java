@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/event")
+@RequestMapping(path = "/event")
 public class VDFEventController {
 
     private VDFEventService vdfEventService;
