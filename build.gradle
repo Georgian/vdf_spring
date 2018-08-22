@@ -52,7 +52,7 @@ task packageProd(dependsOn:bootJar) {
         if (graph.hasTask(packageProd)) {
             // configure task before it is executed
             bootRun {
-                args = ["--spring.profiles.active=dev"]
+                args = ["--spring.profiles.active=prod"]
             }
         }
     }
