@@ -28,3 +28,6 @@
 h2-dev.mv.db
 h2-dev.trace.db
 application-prod.yml
+gradlew
+gradlew.bat
+h2.mv.db
