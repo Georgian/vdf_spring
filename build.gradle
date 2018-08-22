@@ -29,7 +29,8 @@ repositories {
 
 
 dependencies {
-	compile('com.h2database:h2')
+    compile('mysql:mysql-connector-java')
+    compile('com.h2database:h2')
     compile('org.springframework.boot:spring-boot-autoconfigure')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -40,4 +41,19 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok:1.18.0'
 	apt "org.projectlombok:lombok:1.18.0"
+}
+
+// make sure bootRun is executed when this task runs
+task packageProd(dependsOn:bootJar) {
+    // TaskExecutionGraph is populated only after
+    // all the projects in the build have been evaulated https://docs.gradle.org/current/javadoc/org/gradle/api/execution/TaskExecutionGraph.html#whenReady-groovy.lang.Closure-
+    gradle.taskGraph.whenReady { graph ->
+        logger.lifecycle('>>> Setting spring.profiles.active to prod')
+        if (graph.hasTask(packageProd)) {
+            // configure task before it is executed
+            bootRun {
+                args = ["--spring.profiles.active=dev"]
+            }
+        }
+    }
 }

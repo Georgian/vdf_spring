@@ -1,0 +1,11 @@
+spring:
+    profiles:
+        include: default
+    h2:
+        console:
+            enabled: true
+    datasource:
+        url: jdbc:h2:file:~/workspace/vdf_spring/h2-dev;DB_CLOSE_ON_EXIT=FALSE
+    jpa:
+        hibernate:
+          ddl-auto: update

@@ -4,6 +4,7 @@ import com.ggrec.vdf_spring.security.SocialAuthenticationSuccessHandler;
 import com.ggrec.vdf_spring.security.VDFAuthenticationFilter;
 import com.ggrec.vdf_spring.service.VDFAccountSocialDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -18,6 +19,9 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.social.UserIdSource;
 import org.springframework.social.security.SocialAuthenticationFilter;
 import org.springframework.social.security.SpringSocialConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -72,29 +76,29 @@ public class VDFConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 
                 //allow anonymous font and template requests
-                .antMatchers("/").permitAll()
-                .antMatchers("/favicon.ico").permitAll()
-                .antMatchers("/resources/**").permitAll()
-
-                // todo facebook only for now
-                //allow anonymous calls to social login
-                .antMatchers("/auth/facebook/**").permitAll()
-
-                //allow anonymous GETs to API
-                .antMatchers(HttpMethod.GET, "/**").permitAll()
-
-                //defined Admin only API area
-                .antMatchers("/admin/**").hasRole("ADMIN")
-
-                //all other request need to be authenticated
-                .antMatchers(HttpMethod.GET, "/users/current/details").hasRole("USER")
-                .anyRequest().hasRole("USER").and()
-
-                // add custom authentication filter for complete stateless JWT based authentication
-                .addFilterBefore(authenticationFilter, AbstractPreAuthenticatedProcessingFilter.class)
-
-                // apply the configuration from the socialConfigurer (adds the SocialAuthenticationFilter)
-                .apply(socialConfigurer.userIdSource(userIdSource));
+                .antMatchers("/").permitAll();
+//                .antMatchers("/favicon.ico").permitAll()
+//                .antMatchers("/resources/**").permitAll()
+//
+//                // todo facebook only for now
+//                //allow anonymous calls to social login
+//                .antMatchers("/auth/facebook/**").permitAll()
+//
+//                //allow anonymous GETs to API
+//                .antMatchers(HttpMethod.GET, "/**").permitAll()
+//
+//                //defined Admin only API area
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//
+//                //all other request need to be authenticated
+//                .antMatchers(HttpMethod.GET, "/users/current/details").hasRole("USER")
+//                .anyRequest().hasRole("USER").and()
+//
+//                // add custom authentication filter for complete stateless JWT based authentication
+//                .addFilterBefore(authenticationFilter, AbstractPreAuthenticatedProcessingFilter.class)
+//
+//                // apply the configuration from the socialConfigurer (adds the SocialAuthenticationFilter)
+//                .apply(socialConfigurer.userIdSource(userIdSource));
     }
 
     @Bean
@@ -111,6 +115,18 @@ public class VDFConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected VDFAccountSocialDetailsService userDetailsService() {
         return accountSocialDetailsService;
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
 }
