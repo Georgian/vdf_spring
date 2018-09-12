@@ -29,14 +29,15 @@ public class VDFEventController {
         return vdfEventService.getAll(query, sports, disciplines, organizers);
     }
 
-    @PostMapping
-    public void add(@RequestBody VDFEvent vdfEvent) {
-        vdfEventService.save(vdfEvent);
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Long id) {
-        vdfEventService.delete(id);
-    }
+    // TODO Security reasons
+//    @PostMapping
+//    public void add(@RequestBody VDFEvent vdfEvent) {
+//        vdfEventService.save(vdfEvent);
+//    }
+//
+//    @DeleteMapping(value = "/{id}")
+//    public void delete(@PathVariable Long id) {
+//        vdfEventService.delete(id);
+//    }
 
 }

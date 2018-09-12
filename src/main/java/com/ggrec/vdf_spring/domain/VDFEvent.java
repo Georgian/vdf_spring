@@ -2,6 +2,8 @@ package com.ggrec.vdf_spring.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Entity(name = "vdf_event")
@@ -19,9 +21,10 @@ public class VDFEvent {
     // private List<String> ageCategories;
     // private List<String> distanceCategories
     private String organizer;
-    //    @OneToOne
-//    private VDFOrganizer organizer;
-    private LocalDate date;
+    // @OneToOne
+    // private VDFOrganizer organizer;
+    private LocalDate dateStart;
+    private LocalDate dateEnd;
     private String timeSchedule;
     private String price;
     private String locationName;
@@ -43,6 +46,13 @@ public class VDFEvent {
         return Optional.ofNullable(field)
                 .map(str -> str.toLowerCase().contains(query.toLowerCase()))
                 .orElse(false);
+    }
+
+    /**
+     * Preparing the infrastructure for an event with mutiple disciplines
+     */
+    public List<String> getDisciplines() {
+        return Arrays.asList(getDiscipline().split(","));
     }
 
     public long getId() {
@@ -93,14 +103,21 @@ public class VDFEvent {
         this.organizer = organizer;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getDateStart() {
+        return dateStart;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDateStart(LocalDate dateStart) {
+        this.dateStart = dateStart;
     }
 
+    public LocalDate getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(LocalDate dateEnd) {
+        this.dateEnd = dateEnd;
+    }
     public String getTimeSchedule() {
         return timeSchedule;
     }
