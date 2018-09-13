@@ -28,6 +28,10 @@ public class VDFEventService {
         vdfEventRepository.deleteById(id);
     }
 
+    public VDFEvent getById(long id) {
+        return vdfEventRepository.getOne(id);
+    }
+
     public List<VDFEvent> getAll(String query, List<String> sports, List<String> disciplines, List<String> organizers) {
 
         Stream<VDFEvent> events = vdfEventRepository.findAll().stream();

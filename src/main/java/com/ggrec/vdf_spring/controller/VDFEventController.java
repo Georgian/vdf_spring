@@ -5,6 +5,7 @@ import com.ggrec.vdf_spring.service.VDFEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,11 @@ public class VDFEventController {
     ) {
 
         return vdfEventService.getAll(query, sports, disciplines, organizers);
+    }
+
+    @GetMapping("/{id}")
+    public VDFEvent getById(@PathVariable("id") Long id) {
+        return vdfEventService.getById(id);
     }
 
     // TODO Security reasons

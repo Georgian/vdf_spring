@@ -1,13 +1,18 @@
 package com.ggrec.vdf_spring.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Entity(name = "vdf_event")
-public class VDFEvent {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class VDFEvent implements Serializable {
 
     @Id
     @GeneratedValue
@@ -51,6 +56,7 @@ public class VDFEvent {
     /**
      * Preparing the infrastructure for an event with mutiple disciplines
      */
+    @JsonIgnore
     public List<String> getDisciplines() {
         return Arrays.asList(getDiscipline().split(","));
     }
