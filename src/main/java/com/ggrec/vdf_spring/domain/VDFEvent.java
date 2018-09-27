@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity(name = "vdf_event")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -38,6 +39,17 @@ public class VDFEvent implements Serializable {
     private String technicalGuideLink;
     private String photoLink;
     private String trackLinks;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<VDFEventTag> tags;
+
+    public Set<VDFEventTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<VDFEventTag> tags) {
+        this.tags = tags;
+    }
 
     public boolean matchesQuery(String query) {
         return matches(name, query) ||

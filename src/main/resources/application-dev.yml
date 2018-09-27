@@ -7,5 +7,14 @@ spring:
     datasource:
         url: jdbc:h2:file:~/workspace/vdf_spring/h2-dev;DB_CLOSE_ON_EXIT=FALSE
     jpa:
+        database-platform: org.hibernate.dialect.MySQL5Dialect
         hibernate:
-          ddl-auto: update
+          ddl-auto: none
+#        properties:
+#          javax:
+#            persistence:
+#              schema-generation:
+#                create-source: metadata
+#                scripts:
+#                  action: create
+#                  create-target: create.sql
