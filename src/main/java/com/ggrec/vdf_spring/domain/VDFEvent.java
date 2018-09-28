@@ -1,14 +1,10 @@
 package com.ggrec.vdf_spring.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Entity(name = "vdf_event")
@@ -21,14 +17,7 @@ public class VDFEvent implements Serializable {
     private String name;
     @Column(length = 1000)
     private String description;
-    private String sport;
-    private String discipline;
-    // private List<String> levels;
-    // private List<String> ageCategories;
-    // private List<String> distanceCategories
     private String organizer;
-    // @OneToOne
-    // private VDFOrganizer organizer;
     private LocalDate dateStart;
     private LocalDate dateEnd;
     private String timeSchedule;
@@ -49,28 +38,6 @@ public class VDFEvent implements Serializable {
 
     public void setTags(Set<VDFEventTag> tags) {
         this.tags = tags;
-    }
-
-    public boolean matchesQuery(String query) {
-        return matches(name, query) ||
-                matches(description, query) ||
-                matches(discipline, query) ||
-                matches(organizer, query) ||
-                matches(locationName, query);
-    }
-
-    private boolean matches(String field, String query) {
-        return Optional.ofNullable(field)
-                .map(str -> str.toLowerCase().contains(query.toLowerCase()))
-                .orElse(false);
-    }
-
-    /**
-     * Preparing the infrastructure for an event with mutiple disciplines
-     */
-    @JsonIgnore
-    public List<String> getDisciplines() {
-        return Arrays.asList(getDiscipline().split(","));
     }
 
     public long getId() {
@@ -95,22 +62,6 @@ public class VDFEvent implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getSport() {
-        return sport;
-    }
-
-    public void setSport(String sport) {
-        this.sport = sport;
-    }
-
-    public String getDiscipline() {
-        return discipline;
-    }
-
-    public void setDiscipline(String discipline) {
-        this.discipline = discipline;
     }
 
     public String getOrganizer() {

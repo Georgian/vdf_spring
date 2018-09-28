@@ -32,23 +32,8 @@ public class VDFEventService {
         return vdfEventRepository.getOne(id);
     }
 
-    public List<VDFEvent> getAll(String query, List<String> sports, List<String> disciplines, List<String> organizers) {
-
-        Stream<VDFEvent> events = vdfEventRepository.findAll().stream();
-
-        if (sports != null)
-            events = events.filter(e -> sports.contains(e.getSport()));
-
-        if (disciplines != null)
-            events = events.filter(e -> disciplines.contains(e.getDiscipline()));
-
-        if (organizers != null)
-            events = events.filter(e -> organizers.contains(e.getOrganizer()));
-
-        if (!VDFUtils.isNullOrEmpty(query))
-            events = events.filter(e -> e.matchesQuery(query));
-
-        return events.collect(Collectors.toList());
+    public List<VDFEvent> getAll() {
+        return vdfEventRepository.findAll();
     }
 
 }
