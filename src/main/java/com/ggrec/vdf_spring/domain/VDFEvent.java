@@ -14,20 +14,35 @@ public class VDFEvent implements Serializable {
     @Id
     @GeneratedValue
     private long id;
+
     private String name;
-    @Column(length = 1000)
-    private String description;
-    private String organizer;
+
     private LocalDate dateStart;
     private LocalDate dateEnd;
-    private String timeSchedule;
-    private String price;
+
+    @Column(length = 1000)
+    private String description;
+
+    private String organizer;
+
+    private String schedule;
+
+    private String prizes;
+
+    private String ageCategories;
+
+    private String tracks;
+
     private String locationName;
     private String locationCoordinates;
-    private String registrationLink;
-    private String technicalGuideLink;
+
     private String photoLink;
-    private String trackLinks;
+
+    private String registrationTax;
+
+    private String registrationLink;
+
+    private String technicalGuideLink;
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<VDFEventTag> tags;
@@ -87,20 +102,20 @@ public class VDFEvent implements Serializable {
     public void setDateEnd(LocalDate dateEnd) {
         this.dateEnd = dateEnd;
     }
-    public String getTimeSchedule() {
-        return timeSchedule;
+    public String getSchedule() {
+        return schedule;
     }
 
-    public void setTimeSchedule(String timeSchedule) {
-        this.timeSchedule = timeSchedule;
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
     }
 
-    public String getPrice() {
-        return price;
+    public String getRegistrationTax() {
+        return registrationTax;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setRegistrationTax(String registrationTax) {
+        this.registrationTax = registrationTax;
     }
 
     public String getLocationName() {
@@ -143,11 +158,28 @@ public class VDFEvent implements Serializable {
         this.photoLink = photoLink;
     }
 
-    public String getTrackLinks() {
-        return trackLinks;
+    public String getTracks() {
+        return tracks;
     }
 
-    public void setTrackLinks(String trackLinks) {
-        this.trackLinks = trackLinks;
+    public void setTracks(String tracks) {
+        this.tracks = tracks;
     }
+
+    public String getAgeCategories() {
+        return ageCategories;
+    }
+
+    public void setAgeCategories(String ageCategories) {
+        this.ageCategories = ageCategories;
+    }
+
+    public String getPrizes() {
+        return prizes;
+    }
+
+    public void setPrizes(String prizes) {
+        this.prizes = prizes;
+    }
+
 }
