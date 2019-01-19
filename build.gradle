@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.3.RELEASE'
+		springBootVersion = '2.1.1.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -31,13 +31,14 @@ repositories {
 dependencies {
     compile('mysql:mysql-connector-java')
     compile('com.h2database:h2')
-    compile('org.springframework.boot:spring-boot-autoconfigure')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.social:spring-social-security:1.1.6.RELEASE')
-    compile('org.springframework.boot:spring-boot-starter-social-facebook:1.5.15.RELEASE')
+    compile('org.springframework.security:spring-security-oauth2-client')
+    compile('io.jsonwebtoken:jjwt:0.9.1')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
 	compileOnly 'org.projectlombok:lombok:1.18.0'
 	apt "org.projectlombok:lombok:1.18.0"

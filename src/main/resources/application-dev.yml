@@ -5,11 +5,12 @@ spring:
         console:
             enabled: true
     datasource:
-        url: jdbc:h2:file:~/workspace/vdf_spring/h2-dev;DB_CLOSE_ON_EXIT=FALSE
+        # url: jdbc:h2:file:~/workspace/vdf_spring/h2-dev;DB_CLOSE_ON_EXIT=FALSE
+        url: jdbc:h2:file:~/IdeaProjects/vdf_spring/h2-dev;DB_CLOSE_ON_EXIT=FALSE
     jpa:
         database-platform: org.hibernate.dialect.MySQL5Dialect
         hibernate:
-          ddl-auto: none
+          ddl-auto: create
 #        properties:
 #          javax:
 #            persistence:
