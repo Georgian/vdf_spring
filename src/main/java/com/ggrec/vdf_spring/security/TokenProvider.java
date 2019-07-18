@@ -31,6 +31,7 @@ public class TokenProvider {
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
+                .claim("user", userPrincipal.toJson())
                 .compact();
     }
 
