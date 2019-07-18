@@ -5,7 +5,7 @@ import com.ggrec.vdf_spring.service.VDFEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @RestController
@@ -19,6 +19,7 @@ public class VDFEventController {
         this.vdfEventService = vdfEventService;
     }
 
+    @PermitAll
     @GetMapping
     public List<VDFEvent> getAll() {
         return vdfEventService.getAll();
@@ -29,12 +30,12 @@ public class VDFEventController {
         return vdfEventService.getById(id);
     }
 
-    // TODO Security reasons
-//    @PostMapping
-//    public void add(@RequestBody VDFEvent vdfEvent) {
-//        vdfEventService.save(vdfEvent);
-//    }
-//
+    @PermitAll
+    @PostMapping
+    public void add(@RequestBody VDFEvent vdfEvent) {
+        vdfEventService.save(vdfEvent);
+    }
+
 //    @DeleteMapping(value = "/{id}")
 //    public void delete(@PathVariable Long id) {
 //        vdfEventService.delete(id);
