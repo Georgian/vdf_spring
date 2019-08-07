@@ -19,6 +19,9 @@ Either that or you configure a SSL connection... which I was too lazy to do. :P
 
 # Problems & Solutions
 
+Q: Gradle active profile is not PROD
+A: On Mac, do SPRING_ACTIVE_PROFILES=prod in the terminal. Since Gradle 5, the programatic way doesn't work.
+
 Q: In the logs you get connect() failed (111: Connection refused) while connecting to upstream,
    or "500 Bad Gateway" when you call an API
 A: Set SERVER_PORT = 5000 (or whatever port you have in prod yml file)

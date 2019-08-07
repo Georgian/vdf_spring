@@ -1,23 +1,24 @@
 package com.ggrec.vdf_spring.service;
 
 import com.ggrec.vdf_spring.domain.VDFEvent;
+import com.ggrec.vdf_spring.domain.VDFEventTag;
 import com.ggrec.vdf_spring.repository.VDFEventRepository;
-import com.ggrec.vdf_spring.util.VDFUtils;
+import com.ggrec.vdf_spring.repository.VDFEventTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class VDFEventService {
 
     private VDFEventRepository vdfEventRepository;
+    private VDFEventTagRepository vdfEventTagRepository;
 
     @Autowired
-    public VDFEventService(VDFEventRepository vdfEventRepository) {
+    public VDFEventService(VDFEventRepository vdfEventRepository, VDFEventTagRepository vdfEventTagRepository) {
         this.vdfEventRepository = vdfEventRepository;
+        this.vdfEventTagRepository = vdfEventTagRepository;
     }
 
     public void save(VDFEvent vdfEvent) {
@@ -34,6 +35,10 @@ public class VDFEventService {
 
     public List<VDFEvent> getAll() {
         return vdfEventRepository.findAll();
+    }
+
+    public List<VDFEventTag> getAllTags() {
+        return vdfEventTagRepository.findAll();
     }
 
 }

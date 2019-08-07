@@ -38,10 +38,6 @@ dependencies {
     compile('io.jsonwebtoken:jjwt:0.9.1')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.security:spring-security-test')
-    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
-
-	compileOnly 'org.projectlombok:lombok:1.18.0'
-	apt "org.projectlombok:lombok:1.18.0"
 }
 
 // make sure bootRun is executed when this task runs
