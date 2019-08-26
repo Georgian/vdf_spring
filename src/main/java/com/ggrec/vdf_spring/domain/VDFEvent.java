@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity(name = "vdf_event")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class VDFEvent implements Serializable {
+
+    private static final String COVER_PHOTO_LINK_FORMAT = "https://vdf-storage.s3.amazonaws.com/event/{0}/cover.jpg";
 
     @Id
     @GeneratedValue
@@ -36,6 +39,8 @@ public class VDFEvent implements Serializable {
     private String locationName;
     private String locationCoordinates;
 
+    // Just carrying initial link from the client for now. Has to be removed at some point
+    @Transient
     private String photoLink;
 
     private String registrationTax;
@@ -150,8 +155,15 @@ public class VDFEvent implements Serializable {
         this.technicalGuideLink = technicalGuideLink;
     }
 
+    public boolean doesPhotoLinkNeedUpdating() {
+        // photoLink field carries the original URL from the client,
+        // but as soon as this entity is saved, it will become empty
+        // and only used for edit operations
+        return !getPhotoLink().equals(photoLink);
+    }
+
     public String getPhotoLink() {
-        return photoLink;
+        return MessageFormat.format(COVER_PHOTO_LINK_FORMAT, getId());
     }
 
     public void setPhotoLink(String photoLink) {

@@ -19,6 +19,9 @@ Either that or you configure a SSL connection... which I was too lazy to do. :P
 
 # Problems & Solutions
 
+Q: Encoding doesn't work when saving events with special characters, altough DB collation is properly set
+A: Add this to the DB URL: ?characterEncoding=UTF-8
+
 Q: Gradle active profile is not PROD
 A: On Mac, do SPRING_ACTIVE_PROFILES=prod in the terminal. Since Gradle 5, the programatic way doesn't work.
 

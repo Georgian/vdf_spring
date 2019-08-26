@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.1.1.RELEASE'
+		springBootVersion = '2.1.7.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -29,6 +29,7 @@ repositories {
 
 
 dependencies {
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.618'
     compile('mysql:mysql-connector-java')
     compile('com.h2database:h2')
     compile('org.springframework.boot:spring-boot-starter-web')

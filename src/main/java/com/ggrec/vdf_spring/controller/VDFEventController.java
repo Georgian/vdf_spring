@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,8 +24,8 @@ public class VDFEventController {
 
     @PermitAll
     @GetMapping
-    public List<VDFEvent> getAll() {
-        return vdfEventService.getAll();
+    public List<VDFEvent> getFutureEvents() {
+        return vdfEventService.getFutureEvents();
     }
 
     @PermitAll
@@ -39,13 +40,21 @@ public class VDFEventController {
     @RolesAllowed("ADMIN")
     @PostMapping
     public void add(@RequestBody VDFEvent vdfEvent) {
-        vdfEventService.save(vdfEvent);
+        try {
+            vdfEventService.save(vdfEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @RolesAllowed("ADMIN")
     @PutMapping("/{id}")
     public void save(@RequestBody VDFEvent vdfEvent) {
-        vdfEventService.save(vdfEvent);
+        try {
+            vdfEventService.save(vdfEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 //    @DeleteMapping(value = "/{id}")
