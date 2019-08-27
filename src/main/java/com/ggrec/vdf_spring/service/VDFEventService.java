@@ -39,7 +39,7 @@ public class VDFEventService {
 
         if (vdfEvent.doesPhotoLinkNeedUpdating()) {
             String coverPhotoName = MessageFormat.format("{0}/{1}/{2}", EVENT_FOLDER, savedEvent.getId(), COVER_PHOTO_FILENAME);
-            URL coverPhotoLink = new URL(vdfEvent.getPhotoLink());
+            URL coverPhotoLink = new URL(vdfEvent.getPhotoLink_Original());
             awsClient.uploadFileFromURL(coverPhotoLink, coverPhotoName, "image/jpeg");
         }
     }

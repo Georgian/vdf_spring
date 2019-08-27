@@ -159,7 +159,13 @@ public class VDFEvent implements Serializable {
         // photoLink field carries the original URL from the client,
         // but as soon as this entity is saved, it will become empty
         // and only used for edit operations
-        return !getPhotoLink().equals(photoLink);
+        return getPhotoLink_Original() != null
+                && !getPhotoLink_Original().trim().equals("")
+                && !getPhotoLink().equals(getPhotoLink_Original());
+    }
+
+    public String getPhotoLink_Original() {
+        return photoLink;
     }
 
     public String getPhotoLink() {
