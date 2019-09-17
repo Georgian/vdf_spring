@@ -41,17 +41,22 @@ dependencies {
     testCompile('org.springframework.security:spring-security-test')
 }
 
-// make sure bootRun is executed when this task runs
-task packageProd(dependsOn:bootJar) {
-    // TaskExecutionGraph is populated only after
-    // all the projects in the build have been evaulated https://docs.gradle.org/current/javadoc/org/gradle/api/execution/TaskExecutionGraph.html#whenReady-groovy.lang.Closure-
-    gradle.taskGraph.whenReady { graph ->
-        logger.lifecycle('>>> Setting spring.profiles.active to prod')
-        if (graph.hasTask(packageProd)) {
-            // configure task before it is executed
-            bootRun {
-                args = ["--spring.profiles.active=prod"]
-            }
-        }
-    }
+def profiles = 'prod'
+bootRun {
+    args = ["--spring.profiles.active=" + profiles]
 }
+
+// make sure bootRun is executed when this task runs
+//task packageProd(dependsOn:bootJar) {
+//    // TaskExecutionGraph is populated only after
+//    // all the projects in the build have been evaulated https://docs.gradle.org/current/javadoc/org/gradle/api/execution/TaskExecutionGraph.html#whenReady-groovy.lang.Closure-
+//    gradle.taskGraph.whenReady { graph ->
+//        logger.lifecycle('>>> Setting spring.profiles.active to prod for packaging')
+//        if (graph.hasTask(packageProd)) {
+//            // configure task before it is executed
+//            bootRun {
+//                args = ["--spring.profiles.active=prod"]
+//            }
+//        }
+//    }
+//}

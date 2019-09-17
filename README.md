@@ -2,6 +2,7 @@
 
 1. Install h2 for accessing the DB. You can specify the DB file in application-dev.yml
 2. Grab profile application-prod.yml from the secret place, to connect to the prod DB.
+3. Set AWS credentials in '.aws/credentials'
 
 # New AWS account setup
 
